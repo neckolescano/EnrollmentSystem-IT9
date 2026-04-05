@@ -6,7 +6,6 @@
     .homepage-master {
         width: 100%;
         min-height: 100vh;
-        /* I am leaving the image path empty for you to layout */
         background-image: url('/images/your-background-here.png'); 
         background-size: cover;
         background-position: center;
@@ -19,12 +18,12 @@
     .text-layer {
         width: 100%;
         min-height: 100vh;
-        padding: 50px 10px; /* Side margin you liked */
+        padding: 50px 10px; /* Side margin */
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centers vertically on the screen */
-        align-items: flex-start; /* Pushes everything to the LEFT */
-        text-align: left;        /* Aligns text to the LEFT */
+        justify-content: center; 
+        align-items: flex-start; 
+        text-align: left;        
     }
 
     /* 3. HERO TEXT PLACEMENT */
@@ -88,7 +87,7 @@
         font-weight: bold;
     }
 
-    /* 5. BOTTOM INFO PLACEMENT - Side by side on the left */
+    /* 5. BOTTOM INFO PLACEMENT  */
     .bottom-info-container {
         display: flex;
         gap: 60px;
