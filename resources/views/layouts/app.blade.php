@@ -7,15 +7,11 @@
 
         <title>UM Enrollment System</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Monoton&family=Orbitron:wght@400;700&family=Electrolize&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Orbitron:wght@400;700&family=Electrolize&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
      <style>
@@ -33,106 +29,113 @@
             color: #333;
         }
 
-        /* 2. NAVBAR STYLES */
+        /* 2. NAVBAR STYLES - NOW WHITE */
         .navbar { 
-            background: var(--um-maroon); 
-            padding: 1rem 5%; 
+            background: #ffffff !important; /* Pure White Background */
+            padding: 0.8rem 5%; 
             display: flex; 
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-bottom: 3px solid var(--um-gold);
+            position: sticky; /* Stays at top while scrolling */
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); /* Subtle shadow for depth */
         }
         
         .nav-link { 
-            color: rgba(255,255,255,0.9); 
+            color: #444 !important; /* Dark text for readability on white */
             text-decoration: none; 
             padding: 0.5rem 1.2rem; 
-            font-weight: 400;
+            font-weight: 600;
             transition: 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
 
         .nav-link:hover {
-            color: var(--um-gold);
+            color: var(--um-maroon) !important;
         }
 
         .active { 
-            color: var(--um-gold) !important;
-            font-weight: 700;
+            color: var(--um-maroon) !important;
+            border-bottom: 2px solid var(--um-gold); /* Gold indicator for active page */
         }
 
         /* 3. MAIN CONTAINER */
         .container { 
-            padding: 40px 5%; 
+            padding: 40px 3%; 
             max-width: 1200px; 
             margin: 0 auto;
+            min-height: 80vh;
         }
 
-        /* 4. CARDS & TABLES (Glassmorphism Light) */
+        /* 4. CARDS & TABLES */
         .content-card {
             background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--um-maroon);
+        }
+
+        /* TABLE STYLE */
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0 10px; /* Gives rows a "card" look */
+        }
+
+        th { 
+            background-color: transparent;
+            color: var(--um-maroon);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 15px;
+            border-bottom: 2px solid var(--um-gold);
+        }
+
+        td { 
+            background-color: #fff;
+            padding: 20px 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
         }
 
         h1, h2, h3 { 
             color: var(--um-maroon); 
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        table { 
-            width: 100%; border-collapse: collapse; margin-top: 20px;
-        }
-        th { 
-            text-align: left; padding: 15px; 
-            background-color: #f9f9f9; 
-            color: var(--um-maroon);
-            border-bottom: 2px solid var(--um-gold);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-        td { padding: 15px; border-bottom: 1px solid #eee; }
-
-        /* 5. BUTTONS - Maroon & Gold */
-        .btn-um { 
-            background: var(--um-maroon); 
-            color: white; 
-            padding: 10px 25px; 
-            border-radius: 50px; 
-            text-decoration: none; 
-            display: inline-block;
-            font-weight: 600;
-            border: none;
-            transition: 0.3s;
-        }
-        .btn-um:hover { 
-            background: #600000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(128,0,0,0.3);
-        }
-
+        /* 5. BUTTONS */
         .logout-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid var(--um-gold);
-            padding: 5px 15px;
+            background: var(--um-maroon);
+            color: white !important;
+            border: none;
+            padding: 8px 20px;
             border-radius: 50px;
             cursor: pointer;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
         }
-        .logout-btn:hover { background: var(--um-gold); color: black; }
+        .logout-btn:hover { 
+            background: #600000; 
+            transform: scale(1.05);
+        }
+
+
     </style>
 
     </head>
+    <body>
     <nav class="navbar">
-        <div style="color: white; font-weight: 700; font-size: 1.2rem; margin-right: 30px;">
+        <div style="font-family: 'Orbitron'; font-weight: 700; font-size: 1.3rem; margin-right: 40px; color: var(--um-maroon);">
             UM <span style="color: var(--um-gold);">ENROLLMENT</span>
         </div>
 
+        {{-- Nav Links --}}
         <a href="/" class="nav-link {{ Request::is('/') ? 'active' : '' }}">Dashboard</a>
         
         @auth
@@ -151,8 +154,14 @@
         @endauth
     </nav>
 
-    <div class="container">
-        @yield('content')
-    </div>
+    <main>
+        @if(!Request::is('/') && !Request::is('dashboard')) 
+            <div class="container">
+                @yield('content')
+            </div>
+        @else
+            @yield('content')
+        @endif
+    </main>
 </body>
 </html>
