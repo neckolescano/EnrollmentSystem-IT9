@@ -9,7 +9,7 @@
         overflow-x: hidden;
     }
 
-    /* 2. HERO SECTION */
+    /* 2. main or first part ni sya sa home*/
     .hero-section {
         width: 100%;
         min-height: 92vh; 
@@ -42,7 +42,7 @@
     }
     .hero-title span { color: #d4af37; } 
 
-    /* 4. MODERNIZED STEPS SECTION */
+    /* 4. STEPS SECTION kani sya*/
     .steps-section {
         width: 100%;
         background-color: #f5f5f5;
@@ -135,7 +135,7 @@
         font-size: 0.95rem;
     }
 
-    /* 5. DATES SECTION: Optimized Glassmorphism */
+    /* 5. DATES SECTION glassmorphism design naa diri */
     .dates-section {
         width: 100%;
         background-image: url("{{ asset('images/datebg1.png') }}");
@@ -173,7 +173,7 @@
         border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    /* MAROON PILL BUTTON */
+    /* MAROON BUTTON ni sya */
     .btn-maroon {
         background-color: #800000;
         color: white;
@@ -204,7 +204,7 @@
                 Easily settle your UM Online Enrollment payments—including tuition, ID, 
                 and more—anytime, anywhere with our secure portal.
             </p>
-            <a href="{{ route('enrollments.create') }}" class="btn-maroon">Enroll Now</a>
+            <a href="{{ route('enrollments.step1') }}" class="btn-maroon">Enroll Now</a>
         </div>
     </div>
 </section>

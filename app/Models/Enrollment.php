@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'enrollment_id';
+    protected $fillable = ['student_id', 'semester', 'school_year', 'enrollment_date', 'status'];
 
-    // Add this line below to allow data to be saved:
-    protected $fillable = [
-        'student_id',
-        'student_name',
-        'semester',
-        'school_year',
-        'status'
-    ];
+    public function student() {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function details() {
+        return $this->hasMany(EnrollmentDetail::class, 'enrollment_id');
+    }
 }
