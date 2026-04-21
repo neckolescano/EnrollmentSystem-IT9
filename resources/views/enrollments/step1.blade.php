@@ -54,7 +54,6 @@
         transition: 0.4s ease;
     }
 
-    /* Active state (Step 1) */
     .step-unit.active .step-circle {
         border-color: var(--um-maroon);
         background-color: var(--um-maroon);

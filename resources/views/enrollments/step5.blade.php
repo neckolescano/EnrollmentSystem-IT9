@@ -129,27 +129,19 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
                 
-                 {{-- 5-Step Stepper --}}
-                <div class="stepper-horizontal">
-                    <div class="step-unit">
+                  {{-- 3-Step Stepper --}}
+               <div class="stepper-horizontal">
+                    <div class="step-unit {{ Request::routeIs('enrollments.step3') ? 'active' : '' }}">
                         <div class="step-circle">01</div>
-                        <div class="step-label">Profile</div>
+                        <div class="step-label">SUBJECTS</div>
                     </div>
-                    <div class="step-unit">
+                    <div class="step-unit {{ Request::routeIs('enrollments.step4') ? 'active' : '' }}">
                         <div class="step-circle">02</div>
-                        <div class="step-label">Period</div>
+                        <div class="step-label">REVIEW</div>
                     </div>
-                    <div class="step-unit">
+                    <div class="step-unit {{ Request::routeIs('enrollments.success') ? 'active' : '' }}">
                         <div class="step-circle">03</div>
-                        <div class="step-label">Subjects</div>
-                    </div>
-                    <div class="step-unit">
-                        <div class="step-circle">04</div>
-                        <div class="step-label">Review</div>
-                    </div>
-                    <div class="step-unit active">
-                        <div class="step-circle">05</div>
-                        <div class="step-label">Success</div>
+                        <div class="step-label">SUCCESS</div>
                     </div>
                 </div>
 

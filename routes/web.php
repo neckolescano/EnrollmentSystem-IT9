@@ -3,63 +3,81 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EnrollmentController; 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
-| Public Routes
+|--------------------------------------------------------------------------
+| 1. GUEST ROUTES
+|--------------------------------------------------------------------------
 */
 Route::get('/', function () {
     return view('home');
-})->name('home');
-
+})->middleware('guest');
 
 /*
-| Protected Routes (Login Required)
+|--------------------------------------------------------------------------
+| 2. AUTHENTICATED ROUTES
+|--------------------------------------------------------------------------
 */
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     
-    // Dashboard & Main Index
-    Route::get('/dashboard', function () {
-        return view('home');
-    })->name('dashboard');
+    // Both of these point to the SMART Controller
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::get('/admin-portal', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    /* STUDENT ONLY */
+    Route::middleware('can:student-only')->group(function () {
+        Route::get('/enroll', [EnrollmentController::class, 'showStep1'])->name('enrollments.step1');
+        Route::get('/enroll/subjects', [EnrollmentController::class, 'showStep3'])->name('enrollments.step3');
+        Route::post('/enroll/subjects', [EnrollmentController::class, 'postStep3'])->name('enrollments.post.step3');
+        Route::get('/enroll/review', [EnrollmentController::class, 'showStep4'])->name('enrollments.step4');
+        Route::post('/enroll/store', [EnrollmentController::class, 'store'])->name('enrollments.store');
+        Route::get('/enroll/success', [EnrollmentController::class, 'success'])->name('enrollments.success');
+        
+        Route::get('/my-enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+        Route::get('/my-enrollments/{id}', [EnrollmentController::class, 'show'])->name('enrollments.show');
+    });
 
-    /* --- MULTI-STEP ENROLLMENT ROUTES --- */
-    // Step 1: student info
-    Route::get('/enroll/step-1', [EnrollmentController::class, 'showStep1'])->name('enrollments.step1');
-    Route::post('/enroll/step-1', [EnrollmentController::class, 'postStep1'])->name('enrollments.post.step1');
-    
-    // Step 2: department, course, semester, school year
-    Route::get('/enroll/step-2', [EnrollmentController::class, 'showStep2'])->name('enrollments.step2');
-    Route::post('/enroll/step-2', [EnrollmentController::class, 'postStep2'])->name('enrollments.post.step2');
-    
-    // Step 3: subject selection
-    Route::get('/enroll/step-3', [EnrollmentController::class, 'showStep3'])->name('enrollments.step3');
-    Route::post('/enroll/step-3', [EnrollmentController::class, 'postStep3'])->name('enrollments.post.step3');
-    
-    // Step 4: review & confirm
-    Route::get('/enroll/step-4', [EnrollmentController::class, 'showStep4'])->name('enrollments.step4');
+    /* REGISTRAR & ADMIN SHARED */
+    Route::middleware('can:registrar-access')->group(function () {
+        Route::get('/records', [AdminController::class, 'allRecords'])->name('admin.manage_enrollments');
+        Route::get('/records/list', [AdminController::class, 'allRecords'])->name('admin.records.index');
+       
+        Route::post('/records/{id}/approve', [AdminController::class, 'approve'])->name('admin.records.approve');
+        Route::post('/records/{id}/reject', [AdminController::class, 'reject'])->name('admin.records.reject'); // ADDED THIS
+        
+        Route::get('/records/{id}/edit', [AdminController::class, 'edit'])->name('admin.records.edit'); // MATCHED NAME TO CONTROLLER
+        Route::patch('/records/{id}/update', [AdminController::class, 'updateRecord'])->name('admin.records.update');
 
-    // The Final Submission Action (POST)
-    Route::post('/enroll/store', [EnrollmentController::class, 'store'])->name('enrollments.store');
+        Route::resource('courses', CourseController::class)->names(['create' => 'admin.courses.create','store'  => 'admin.courses.store',]);
+        Route::resource('departments', DepartmentController::class)->names(['create' => 'admin.departments.create','store'  => 'admin.departments.store',]);
+        Route::resource('instructors', InstructorController::class)->names(['create' => 'admin.instructors.create','store'  => 'admin.instructors.store',]);
+        Route::resource('sections', SectionController::class)->names(['create' => 'admin.sections.create','store'  => 'admin.sections.store',]);
+    });
 
-    // STEP 5: Success Page
-    Route::get('/enroll/success', [EnrollmentController::class, 'success'])->name('enrollments.success');
+    /* ADMINISTRATOR ONLY */
+    Route::middleware('can:admin-only')->group(function () {
+        Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('admin.users.index');
+        Route::get('/admin/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+        Route::post('/admin/users/store', [AdminController::class, 'storeUser'])->name('admin.users.store');
 
-    // Profile Management
+        Route::get('/admin/subjects/add', [AdminController::class, 'create'])->name('admin.add_subject');
+        Route::post('/admin/subjects/store', [AdminController::class, 'storeSubject'])->name('admin.subjects.store');
+
+        Route::resource('admin/departments', AdminController::class)->except(['create', 'store']);
+        Route::resource('admin/courses', AdminController::class)->except(['create', 'store']);
+        Route::resource('admin/instructors', AdminController::class);
+        Route::resource('admin/sections', AdminController::class);
+    });
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    /*
-    | Admin Only Routes
-    */
-    Route::middleware('can:admin-only')->group(function () {
-        Route::get('/admin/add-subject', [AdminController::class, 'create'])->name('admin.add_subject');
-        Route::post('/admin/subjects/store', [AdminController::class, 'storeSubject'])->name('admin.subjects.store');
-    });
-
 });
 
 require __DIR__.'/auth.php';

@@ -4,7 +4,7 @@
 <style>
     /* Main container matching your Step 1 layout */
     .admin-main-container { 
-        padding-top: 0px; 
+        padding-top: 40px; 
         padding-bottom: 80px; 
     }
 
@@ -24,10 +24,9 @@
         border-radius: 12px;
         border: 2px solid #ddd;
         font-size: 1.1rem;
-        background-color: white; /* Changed to white for better visibility in dropdowns */
+        background-color: white; 
         transition: 0.3s;
         margin-bottom: 25px;
-        appearance: none; /* Removes default arrow for custom look if desired */
     }
 
     .integrated-input:focus {
@@ -45,7 +44,6 @@
         letter-spacing: 1px;
     }
 
-    /* The Slick Maroon Button */
     .btn-save {
         background: var(--um-maroon);
         color: white;
@@ -66,6 +64,17 @@
         background: #600000;
         transform: translateY(-3px);
     }
+
+    /* Success Alert Styling */
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        border: 1px solid #c3e6cb;
+        font-family: 'Outfit', sans-serif;
+    }
 </style>
 @endpush
 
@@ -75,14 +84,20 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 
-                <h1 class="admin-page-title">Add Subject</h1>
-                <p class="text-center text-muted mb-5">Fill in the details to add a new course to the curriculum.</p>
+                <h1 class="admin-page-title">Subject Management</h1>
+                <p class="text-center text-muted mb-5">Admin Tool: Add new subjects to the university database.</p>
+
+                @if(session('success'))
+                    <div class="alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
                 <div style="border-top: 2px solid #eee; padding-top: 50px;">
                     <form action="{{ route('admin.subjects.store') }}" method="POST">
                         @csrf
                         
-                        {{-- 1. ADDED: Course Selection Dropdown  --}}
+                        {{-- 1. Course Selection --}}
                         <div>
                             <label class="input-label">ASSIGN TO COURSE</label>
                             <select name="course_id" class="integrated-input" required>
@@ -112,13 +127,14 @@
                         </div>
 
                         <button type="submit" class="btn-save">
-                            Save Subject &rsaquo;
+                            Confirm and Add Subject &rsaquo;
                         </button>
                     </form>
                     
                     <div class="text-center mt-4">
-                        <a href="{{ route('enrollments.step2') }}" class="text-muted small" style="text-decoration: none;">
-                            &lsaquo; Back to Subject Selection
+                        {{-- Changed back-link to Dashboard or Management Index --}}
+                        <a href="{{ route('dashboard') }}" class="text-muted small" style="text-decoration: none;">
+                            &lsaquo; Back to Admin Dashboard
                         </a>
                     </div>
                 </div>

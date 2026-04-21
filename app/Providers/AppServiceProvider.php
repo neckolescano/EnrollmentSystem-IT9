@@ -20,11 +20,20 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        // Now this will work because you imported "Gate" at the top
-        Gate::define('admin-only', function (User $user) {
-            return $user->role === 'Administrator'; 
-        });
-    }
+    public function boot(): void {
+    // 1. Full Power
+    Gate::define('admin-only', function ($user) {
+        return $user->role === 'Administrator';
+    });
+
+    // 2. Staff Power (Registrar + Admin can both do this)
+    Gate::define('registrar-access', function ($user) {
+        return in_array($user->role, ['Administrator', 'Registrar Staff']);
+    });
+
+    // 3. Student Power
+    Gate::define('student-only', function ($user) {
+        return $user->role === 'Student';
+    });
+}
 }
