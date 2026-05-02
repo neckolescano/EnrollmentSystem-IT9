@@ -35,7 +35,7 @@
         <div class="student-info">
             Modifying record for: <strong>{{ $record->student->first_name }} {{ $record->student->last_name }}</strong> 
             <span style="margin: 0 15px; color: #eee;">|</span> 
-            <span>ID: #{{ $record->enrollment_id }}</span>
+            <span>ID: #{{ $record->student->school_id_number ?? 'N/A' }}</span>
         </div>
     </div>
 

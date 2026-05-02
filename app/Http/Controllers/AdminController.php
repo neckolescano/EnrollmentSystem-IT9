@@ -84,7 +84,9 @@ class AdminController extends Controller
 
     public function storeUser(Request $request)
     {
+        // 1. ADDED school_id_number to validation
         $request->validate([
+            'school_id_number' => 'required|string|unique:students,school_id_number', 
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -102,8 +104,10 @@ class AdminController extends Controller
                 'role' => 'Student', 
             ]);
 
+            // 2. ADDED school_id_number to the insert array
             DB::table('students')->insert([
                 'user_id' => $user->user_id,
+                'school_id_number' => $request->school_id_number, // THIS WAS MISSING
                 'course_id' => $request->course_id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -127,7 +131,6 @@ class AdminController extends Controller
      */
     public function allRecords()
     {
-        // Using Eloquent with Eager Loading to fix the "Undefined student_name" error
         $enrollments = Enrollment::with(['student.course'])
             ->where('status', 'Pending') 
             ->orderBy('created_at', 'desc')
@@ -196,13 +199,9 @@ class AdminController extends Controller
     */
     public function edit($id)
     {
-        // We eager load details -> section -> subject to prevent empty table rows
         $record = Enrollment::with(['student.course', 'details.section.subject'])->findOrFail($id);
-
-        // This is the collection of enrolled subjects (EnrollmentDetail)
         $enrolledSubjects = $record->details;
 
-        // Get all available sections with calculated remaining slots
         $allSections = DB::table('sections')
             ->join('subjects', 'sections.subject_id', '=', 'subjects.subject_id')
             ->leftJoin('enrollment_details', 'sections.section_id', '=', 'enrollment_details.section_id')
@@ -238,19 +237,16 @@ class AdminController extends Controller
         $enrollment = Enrollment::findOrFail($id);
 
         DB::transaction(function () use ($request, $enrollment) {
-            // Update Enrollment semester
             $enrollment->update([
                 'semester' => $request->semester,
             ]);
 
-            // Update Student Year Level through relationship
             if ($enrollment->student) {
                 $enrollment->student->update([
                     'year_level' => $request->year_level,
                 ]);
             }
 
-            // Handle Section Changes in enrollment_details
             if ($request->has('sections')) {
                 foreach ($request->sections as $detail_id => $new_section_id) {
                     DB::table('enrollment_details')

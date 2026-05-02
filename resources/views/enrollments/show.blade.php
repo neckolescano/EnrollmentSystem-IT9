@@ -14,10 +14,17 @@
 
             <div class="row mb-5 px-3">
                 <div class="col-md-6">
+
                     <div class="mb-3">
                         <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Student Name</small>
                         <span class="fs-5 fw-bold" style="color: #333;">{{ strtoupper($student->first_name) }} {{ strtoupper($student->last_name) }}</span>
                     </div>
+
+                    <div class="mb-3">
+                        <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Student ID</small>
+                        <span class="fw-bold" style="color: var(--um-maroon);">{{ $student->school_id_number ?? 'N/A' }}</span>
+                    </div>
+                    
                     <div>
                         <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Year Level</small>
                         <span class="fw-bold text-dark">{{ $student->year_level }}</span>

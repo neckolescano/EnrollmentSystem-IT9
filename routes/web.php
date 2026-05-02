@@ -55,7 +55,7 @@
                 Route::get('/portal', [RegistrarController::class, 'index'])->name('registrar.dashboard');
                 Route::get('/pending', [RegistrarController::class, 'pending'])->name('registrar.pending');
                 Route::get('/verify/{id}', [RegistrarController::class, 'verify'])->name('registrar.verify');
-                Route::post('/approve/{id}', [RegistrarController::class, 'approve'])->name('registrar.approve');
+                Route::patch('/approve/{id}', [RegistrarController::class, 'approve'])->name('registrar.approve');
             });
 
             // Records Management

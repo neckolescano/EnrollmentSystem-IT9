@@ -5,150 +5,174 @@
     :root {
         --um-maroon: #800000;
         --um-gold: #d4af37;
+        --surface: #ffffff;
+        --subtle-gray: #f8f9fa;
     }
 
-    /* Main container matching the admin layout */
-    .admin-main-container { 
-        padding-top: 40px; 
-        padding-bottom: 80px; 
-    }
+    .admin-main-container { padding: 40px 0 80px 0; }
+    .admin-page-title { font-family: 'Orbitron', sans-serif; color: var(--um-maroon); font-weight: 700; font-size: 2.2rem; text-align: center; }
 
-    /* Standard Page Title */
-    .admin-page-title {
-        font-family: 'Orbitron', sans-serif;
-        color: var(--um-maroon);
-        font-weight: 700;
-        font-size: 2.2rem;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    /* Stat Card Styling */
+    /* Stat Cards Alignment & Spacing */
     .stat-card {
         border-radius: 15px;
-        border: none;
-        transition: 0.3s ease;
-        background: #fff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        padding: 24px;
+        background: var(--surface);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 30px;
         height: 100%;
+        transition: transform 0.3s ease;
+        border-left: 5px solid transparent;
+        margin-bottom: 24px; /* Fixes vertical hugging between cards */
+    }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-border-gold { border-left-color: var(--um-gold); }
+    .stat-border-maroon { border-left-color: var(--um-maroon); }
+
+    /* The "Catalog" / Table Section */
+    .content-card {
+        border-radius: 20px;
+        background: var(--surface);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        padding: 0; 
+        overflow: hidden;
+        margin-top: 15px;
     }
 
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    /* Fixed Table Spacing */
+    .custom-dashboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
     }
 
-    /* Colored accents for the left border */
-    .stat-border-gold {
-        border-left: 5px solid var(--um-gold);
+    .custom-dashboard-table thead {
+        background-color: #fafafa;
+        border-bottom: 2px solid #eee;
     }
 
-    .stat-border-maroon {
-        border-left: 5px solid var(--um-maroon);
-    }
-
-    /* Tech-style Labels */
-    .input-label {
+    .table-label {
         font-family: 'Orbitron', sans-serif;
         font-size: 0.7rem;
-        color: #888;
-        margin-bottom: 8px;
-        display: block;
-        letter-spacing: 1px;
+        color: #999;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 22px 25px; /* Increased vertical padding */
         font-weight: 700;
+    }
+
+    .custom-dashboard-table tbody tr {
+        border-bottom: 1px solid #f1f1f1;
+        transition: background 0.2s;
+    }
+
+    .custom-dashboard-table tbody tr:hover {
+        background-color: #fffdf9;
+    }
+
+    .cell-data {
+        padding: 24px 25px; /* Added more breathing room for student rows */
+        vertical-align: middle;
+    }
+
+    .student-name { color: #333; font-weight: 700; font-size: 0.95rem; }
+    .course-text { color: #666; font-size: 0.85rem; }
+    
+    /* Status Badges */
+    .badge-pending {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.6rem;
+        padding: 6px 14px;
+        border-radius: 4px;
+        background: #fff9e6;
+        color: #d4a017;
+        border: 1px solid #ffeeba;
         text-transform: uppercase;
     }
 
-    /* Table styling to match the card look */
-    .content-card {
-        border-radius: 20px;
-        background: #fff;
-        border: none;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        padding: 30px;
-    }
-
-    /* Action Link */
-    .action-link {
-        color: var(--um-maroon);
+    /* Action Button */
+    .btn-details {
         font-family: 'Orbitron', sans-serif;
+        font-size: 0.65rem;
         font-weight: 700;
-        font-size: 0.8rem;
+        color: var(--um-maroon);
         text-decoration: none;
-        transition: 0.2s;
+        border: 1px solid #ddd;
+        padding: 10px 20px;
+        border-radius: 6px;
+        transition: all 0.2s;
+        display: inline-block;
     }
-
-    .action-link:hover {
-        color: var(--um-gold);
-        text-decoration: underline;
+    .btn-details:hover {
+        background: var(--um-maroon);
+        color: white;
+        border-color: var(--um-maroon);
     }
 </style>
 
 <div class="admin-main-container">
     <div class="container">
         
-        {{-- Page Header --}}
         <div class="text-center mb-5">
             <h1 class="admin-page-title">REGISTRAR <span style="color: var(--um-gold);">DASHBOARD</span></h1>
             <p class="text-muted">Verification and Enrollment Management System 2025-2026</p>
         </div>
 
-        {{-- Statistics Row --}}
         <div class="row g-4 mb-5">
             <div class="col-md-6">
                 <div class="stat-card stat-border-gold">
-                    <span class="input-label">Pending Verification</span>
+                    <span class="table-label" style="padding:0; display:block; margin-bottom:10px;">Pending Verification</span>
                     <h2 class="fw-bold my-2" style="color: var(--um-gold);">{{ $pendingCount ?? '0' }}</h2>
-                    <p class="text-muted small mb-3">Requests requiring registrar staff review.</p>
-                    <a href="{{ route('registrar.pending') }}" class="action-link">
-                        REVIEW PENDING LIST &rsaquo;
-                    </a>
+                    <p class="text-muted small mb-4">Requests requiring registrar staff review.</p>
+                    <a href="{{ route('registrar.pending') }}" class="btn-details">REVIEW PENDING LIST ›</a>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="stat-card stat-border-maroon">
-                    <span class="input-label">Approved Students</span>
+                    <span class="table-label" style="padding:0; display:block; margin-bottom:10px;">Approved Students</span>
                     <h2 class="fw-bold my-2" style="color: var(--um-maroon);">{{ $approvedCount ?? '0' }}</h2>
-                    <p class="text-muted small mb-3">Verified and officially enrolled records.</p>
-                    <a href="{{ route('admin.enrollments.approved') }}" class="action-link">
-                        VIEW MASTER LIST &rsaquo;
-                    </a>
+                    <p class="text-muted small mb-4">Verified and officially enrolled records.</p>
+                    <a href="{{ route('admin.enrollments.approved') }}" class="btn-details">VIEW MASTER LIST ›</a>
                 </div>
             </div>
         </div>
 
-        {{-- Recent Activity Table --}}
         <div class="row">
             <div class="col-12">
-                <h4 class="input-label mb-3" style="font-size: 0.9rem;">Recently Processed Enrollments</h4>
+                <h4 class="table-label mb-3" style="padding-left:10px; color: var(--um-maroon);">Recently Processed Enrollments</h4>
                 <div class="content-card">
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="custom-dashboard-table">
                             <thead>
                                 <tr>
-                                    <th class="input-label border-0">Student Name</th>
-                                    <th class="input-label border-0">Course</th>
-                                    <th class="input-label border-0">Year Level</th>
-                                    <th class="input-label border-0 text-end">Action</th>
+                                    <th class="table-label" style="width: 25%;">Student Name</th>
+                                    <th class="table-label" style="width: 35%;">Course</th>
+                                    <th class="table-label text-center" style="width: 15%;">Year Level</th>
+                                    <th class="table-label text-center" style="width: 15%;">Status</th>
+                                    <th class="table-label text-end" style="width: 10%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($recentEnrollments as $enrollment)
                                 <tr>
-                                    <td class="fw-bold py-3">{{ $enrollment->student_name }}</td>
-                                    <td class="small text-muted">{{ $enrollment->course_name }}</td>
-                                    <td class="small">{{ $enrollment->year_level }}</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-outline-dark fw-bold" style="font-size: 0.65rem; border-radius: 8px;">
-                                            DETAILS
-                                        </a>
+                                    <td class="cell-data student-name">
+                                        {{ $enrollment->student->first_name ?? '' }} {{ $enrollment->student->last_name ?? 'N/A' }}
+                                    </td>
+                                    <td class="cell-data course-text">
+                                        {{ $enrollment->student->course->course_name ?? 'N/A' }}
+                                    </td>
+                                    <td class="cell-data text-center small">
+                                        {{ $enrollment->student->year_level ?? 'N/A' }}
+                                    </td>
+                                    <td class="cell-data text-center">
+                                        <span class="badge-pending">{{ $enrollment->status ?? 'PENDING' }}</span>
+                                    </td>
+                                    <td class="cell-data text-end">
+                                        <a href="{{ route('registrar.verify', $enrollment->enrollment_id) }}" class="btn-details">DETAILS</a>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">
+                                    <td colspan="5" class="cell-data text-center text-muted py-5">
                                         No recent activity to display.
                                     </td>
                                 </tr>

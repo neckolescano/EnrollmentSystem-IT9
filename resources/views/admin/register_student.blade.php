@@ -64,6 +64,10 @@
                     <form action="{{ route('admin.users.store') }}" method="POST">
                         @csrf
                         
+                        {{-- NEW SCHOOL ID NUMBER FIELD --}}
+                        <label class="input-label">OFFICIAL SCHOOL ID NUMBER</label>
+                        <input type="text" name="school_id_number" class="integrated-input" placeholder="e.g., 560114" required>
+
                         <div style="display: flex; gap: 20px;">
                             <div style="flex: 1;">
                                 <label class="input-label">FIRST NAME</label>
@@ -91,7 +95,6 @@
 
                         <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
-                        {{-- DEPARTMENT IS BACK --}}
                         <label class="input-label">ASSIGN TO DEPARTMENT</label>
                         <select name="department_id" class="integrated-input" required>
                             <option value="" disabled selected>Select a Department...</option>

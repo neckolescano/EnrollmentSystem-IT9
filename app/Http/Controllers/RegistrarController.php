@@ -13,7 +13,7 @@ class RegistrarController extends Controller
         $pendingCount = Enrollment::where('status', 'Pending')->count();
         $approvedCount = Enrollment::where('status', 'Approved')->count();
         
-        $recentEnrollments = Enrollment::with(['student']) 
+        $recentEnrollments = Enrollment::with(['student.course']) 
             ->latest()
             ->take(5)
             ->get();
